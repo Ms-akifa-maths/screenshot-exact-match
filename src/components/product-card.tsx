@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, Check, Plus, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";

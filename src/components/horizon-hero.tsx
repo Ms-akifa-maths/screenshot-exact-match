@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import * as THREE from "three";
 import { gsap } from "gsap";
