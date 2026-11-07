@@ -467,12 +467,7 @@ export function DishOrbitCarousel({
           <path ref={arcRef} style={{ opacity: 0.34 }} />
         </svg>
 
-        <div className="dsh-top">
-          <button type="button" className="dsh-btn" aria-label="Search">{Icon.search}</button>
-          <button type="button" className="dsh-btn" aria-label="Menu">{Icon.menu}</button>
-        </div>
-
-        <div className="dsh-pager" role="tablist" aria-label="Choose a dish">
+        <div className="dsh-pager" role="tablist" aria-label="Choose a worksheet">
           {dishes.map((d, i) => (
             <button key={i} type="button" role="tab" className="dsh-btn dsh-dot" aria-selected={i === index}
               aria-current={i === index ? "true" : undefined} aria-label={d.title + " " + d.subtitle} onClick={() => go(i)}>
@@ -492,7 +487,7 @@ export function DishOrbitCarousel({
         <div className="dsh-head" aria-live="polite">
           {dishes.map((d, i) => (
             <div key={i} ref={(el) => { heads.current[i] = el }} className="dsh-hd" aria-hidden={i !== index}>
-              <p className="dsh-eye">{d.eyebrow ?? "#" + (i + 1) + " Most loved dish"}</p>
+              <p className="dsh-eye">{d.eyebrow ?? "#" + (i + 1) + " Featured worksheet"}</p>
               <h2 style={{ margin: 0, font: "inherit" }}>
                 <span className="dsh-t1" style={{ fontSize: fitSize(d.title.length, 56, 330, 0.56) + "px" }}>{d.title}</span>
                 <span className="dsh-t2" style={{ fontSize: fitSize(d.subtitle.length, 62, 320, 0.64) + "px" }}>{d.subtitle}</span>
@@ -502,15 +497,15 @@ export function DishOrbitCarousel({
         </div>
 
         <div className="dsh-acts">
-          <button type="button" className="dsh-btn" onClick={() => dish && onPlay?.(dish, index)}>{Icon.play}Play video</button>
-          <button type="button" className="dsh-btn" onClick={() => dish && onOrder?.(dish, index)}>{Icon.order}Order food</button>
+          <button type="button" className="dsh-btn" onClick={() => dish && onPlay?.(dish, index)}>{Icon.play}View details</button>
+          <button type="button" className="dsh-btn" onClick={() => dish && onOrder?.(dish, index)}>{Icon.order}Add to cart</button>
         </div>
 
         <div className="dsh-card">
-          <div className="dsh-tabs" role="tablist" aria-label="Dish details">
+          <div className="dsh-tabs" role="tablist" aria-label="Worksheet details">
             {["overview", "ingredients"].map((t) => (
               <button key={t} type="button" role="tab" className="dsh-btn dsh-tab" aria-selected={tab === t} onClick={() => setTab(t)}>
-                {t === "overview" ? "Overview" : "Ingredients"}
+                {t === "overview" ? "Overview" : "Includes"}
               </button>
             ))}
           </div>
@@ -533,7 +528,7 @@ export function DishOrbitCarousel({
                 <div className="dsh-react">
                   <button type="button" className="dsh-btn dsh-like" aria-pressed={!!liked[i]} tabIndex={i === index ? 0 : -1}
                     onClick={() => { setLiked((s) => ({ ...s, [i]: !s[i] })); setDisliked((s) => ({ ...s, [i]: false })) }}>
-                    {Icon.up}{d.likes + (liked[i] ? 1 : 0)} likes
+                    {Icon.up}{d.likes + (liked[i] ? 1 : 0)} learners
                   </button>
                   <button type="button" className="dsh-btn dsh-meh" aria-pressed={!!disliked[i]} aria-label="Not for me" tabIndex={i === index ? 0 : -1}
                     onClick={() => { setDisliked((s) => ({ ...s, [i]: !s[i] })); setLiked((s) => ({ ...s, [i]: false })) }}>
@@ -546,7 +541,7 @@ export function DishOrbitCarousel({
         </div>
 
         <div className="dsh-strip">
-          <button type="button" className="dsh-btn dsh-arrow" aria-label="Previous dish" onClick={() => step(-1)}>
+          <button type="button" className="dsh-btn dsh-arrow" aria-label="Previous worksheet" onClick={() => step(-1)}>
             <svg viewBox="0 0 12 16" aria-hidden="true"><path d="M11 0v16L0 8z" /></svg>
           </button>
           <div className="dsh-win">
@@ -561,13 +556,13 @@ export function DishOrbitCarousel({
               ))}
             </div>
           </div>
-          <button type="button" className="dsh-btn dsh-arrow" aria-label="Next dish" onClick={() => step(1)}>
+          <button type="button" className="dsh-btn dsh-arrow" aria-label="Next worksheet" onClick={() => step(1)}>
             <svg viewBox="0 0 12 16" aria-hidden="true"><path d="M1 0v16l11-8z" /></svg>
           </button>
         </div>
 
       </div>
-      <p className="dsh-sr" aria-live="polite">{dish ? "Dish " + (index + 1) + " of " + n + ": " + dish.title + " " + dish.subtitle : ""}</p>
+      <p className="dsh-sr" aria-live="polite">{dish ? "Worksheet " + (index + 1) + " of " + n + ": " + dish.title + " " + dish.subtitle : ""}</p>
     </div>
     </div>
   )
