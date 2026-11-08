@@ -27,7 +27,7 @@ function Checkout() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const qc = useQueryClient();
-  const [name, setName] = useState((user?.user_metadata?.name as string) ?? '');
+  const [name, setName] = useState((user?.user_metadata?.['name'] as string) ?? '');
   const [phone, setPhone] = useState('');
   const [notes, setNotes] = useState('');
   const [busy, setBusy] = useState(false);

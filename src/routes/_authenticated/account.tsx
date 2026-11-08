@@ -27,13 +27,13 @@ function Account() {
 
   const download = async (path: string) => {
     const { data: signed, error } = await supabase.storage.from('worksheet-files').createSignedUrl(path, 60);
-    if (error || !signed) return toast.error("Couldn't prepare the download", { description: error?.message });
+    if (error || !signed) { toast.error("Couldn't prepare the download", { description: error?.message }); return; }
     window.open(signed.signedUrl, '_blank', 'noopener');
   };
   const saveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     const { error } = await supabase.from('profiles').update({ name: name.trim().slice(0, 120), phone: phone.trim().slice(0, 30) || null }).eq('id', data.profile.id);
-    if (error) return toast.error("Couldn't save", { description: error.message });
+    if (error) { toast.error("Couldn't save", { description: error.message }); return; }
     toast.success('Profile saved');
     await qc.invalidateQueries({ queryKey: accountOptions.queryKey });
   };
