@@ -1,4 +1,5 @@
 # Worksheet store completion
+- [x] Fix duplicate home route and typed search validation; verify preview
 - [ ] Visible home, catalog, worksheet details, supplied carousel and folders
 - [ ] Cart, checkout, payment instructions and order tracking
 - [ ] Sign-in, signup, account, downloads and profile

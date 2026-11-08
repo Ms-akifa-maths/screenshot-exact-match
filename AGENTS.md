@@ -33,3 +33,5 @@ use the editor.
 - Public catalog reads use server functions with a publishable client and query-backed route loaders, so the first screen works during SSR.
 - Private customer and admin pages live under the managed authenticated layout; admin reads additionally validate roles server-side, and all mutations use RLS or authorized database RPCs.
 - Worksheet files stay in private storage and downloads use short-lived signed URLs after purchase authorization.
+- Keep named child routes under the authenticated layout; an empty pathless layout conflicts with the public home route.
+- Validate route search schemas with the TanStack Zod adapter so navigation inputs and filter outputs retain inferred types.

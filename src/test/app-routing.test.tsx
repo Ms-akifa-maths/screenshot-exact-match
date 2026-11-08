@@ -14,4 +14,13 @@ describe("App routing", () => {
 
     expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
   });
+
+  it('keeps the public home separate from authenticated destinations', () => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+    expect(router.matchRoutes('/').at(-1)?.routeId).toBe('/');
+    expect(router.matchRoutes('/account').at(-1)?.routeId).toBe('/_authenticated/account');
+    expect(router.matchRoutes('/admin').at(-1)?.routeId).toBe('/_authenticated/admin');
+    expect(router.matchRoutes('/checkout').at(-1)?.routeId).toBe('/_authenticated/checkout');
+    expect(router.matchRoutes('/store').at(-1)?.routeId).toBe('/store');
+  });
 });

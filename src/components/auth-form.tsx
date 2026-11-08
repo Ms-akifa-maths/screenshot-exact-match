@@ -7,7 +7,7 @@ import { safeNext } from '@/lib/auth';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
-export function AuthForm({ mode, next, admin = false }: { mode: 'login' | 'signup'; next?: string; admin?: boolean }) {
+export function AuthForm({ mode, next, admin = false }: { mode: 'login' | 'signup'; next?: string | undefined; admin?: boolean }) {
   const navigate = useNavigate(); const [busy, setBusy] = useState(false); const [error, setError] = useState('');
   const target = safeNext(next, admin ? '/admin' : '/account');
   async function submit(e: FormEvent<HTMLFormElement>) {

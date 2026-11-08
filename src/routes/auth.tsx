@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { z } from 'zod';
+import { zodValidator } from '@tanstack/zod-adapter';
 import { AuthForm } from '@/components/auth-form';
 import { PageHeader, Container } from '@/components/page-shell';
 import { pageMeta } from '@/lib/queries';
-export const Route = createFileRoute('/auth')({ validateSearch: z.object({ next: z.string().optional() }), head: () => pageMeta('Sign in','Sign in to continue to view your worksheet orders, payment status and downloads.'), component: AuthRoute });
+export const Route = createFileRoute('/auth')({ validateSearch: zodValidator(z.object({ next: z.string().optional() })), head: () => pageMeta('Account access','Sign in to continue to view your worksheet orders, payment status and downloads.'), component: AuthRoute });
 function AuthRoute() { const { next } = Route.useSearch(); return <main><PageHeader eyebrow="Welcome back" title="Ready for the next page?" /><Container className="max-w-md py-10"><AuthForm mode="login" next={next} /><p className="mt-6 text-center text-sm text-muted-foreground">New to Axiom? <Link to="/signup" search={{ next }} className="text-primary">Create an account</Link></p></Container></main>; }
