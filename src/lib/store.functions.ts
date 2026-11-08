@@ -16,13 +16,9 @@ export const readCatalog = createServerFn({ method: 'GET' }).handler(async () =>
       return fetch(input, { ...init, headers });
     } },
   });
-  const [products, settings] = await Promise.all([
-    client.from('products').select('*').eq('active', true).order('featured', { ascending: false }).order('created_at'),
-    client.from('payment_settings').select('*').eq('id', 1).maybeSingle(),
-  ]);
+  const products = await client.from('products').select('*').eq('active', true).order('featured', { ascending: false }).order('created_at');
   if (products.error) throw new Error(products.error.message);
-  if (settings.error) throw new Error(settings.error.message);
-  return { products: products.data, settings: settings.data };
+  return { products: products.data, settings: null };
 });
 
 export const readAccount = createServerFn({ method: 'GET' }).middleware([requireSupabaseAuth]).handler(async ({ context }) => {
