@@ -133,7 +133,7 @@
   h2,
   h3 {
     font-family: var(--font-display);
-    letter-spacing: -0.02em;
+    letter-spacing: 0;
   }
   ::selection {
     background: color-mix(in oklab, var(--primary) 60%, transparent);
@@ -195,12 +195,13 @@
 /* Horizon hero (attached three.js hero, adapted) */
 .hz-root {
   position: relative;
-  height: 220svh;
+  height: 90svh;
+  min-height: 620px;
 }
 .hz-stage {
-  position: sticky;
+  position: relative;
   top: 0;
-  height: 100svh;
+  height: 100%;
   overflow: hidden;
 }
 .hz-canvas {
@@ -212,3 +213,5 @@
 .hz-title .title-char {
   display: inline-block;
 }
+@media (max-width: 640px) { .hz-root { height: auto; min-height: 690px; } .hz-stage { min-height: 690px; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }

@@ -28,3 +28,8 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Application architecture
+- Public catalog reads use server functions with a publishable client and query-backed route loaders, so the first screen works during SSR.
+- Private customer and admin pages live under the managed authenticated layout; admin reads additionally validate roles server-side, and all mutations use RLS or authorized database RPCs.
+- Worksheet files stay in private storage and downloads use short-lived signed URLs after purchase authorization.
