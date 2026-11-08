@@ -3,6 +3,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { lazy, Suspense } from 'react';
 import { Search, SlidersHorizontal } from 'lucide-react';
 import { z } from 'zod';
+import { zodValidator, fallback } from '@tanstack/zod-adapter';
 import { PageHeader, Container } from '@/components/page-shell';
 import { ProductCard } from '@/components/product-card';
 import { Input } from '@/components/ui/input';
@@ -14,10 +15,10 @@ import { useCart } from '@/lib/cart';
 import { StoreError, StoreNotFound, StorePending } from '@/components/load-state';
 import { ClientOnly } from '@tanstack/react-router';
 const Orbit = lazy(() => import('@/components/ui/worksheet-orbit-carousel'));
-const filters = z.object({ q: z.string().optional().catch(''), category: z.string().optional().catch(''), difficulty: z.string().optional().catch(''), grade: z.string().optional().catch(''), max: z.coerce.number().optional().catch(undefined), sort: z.string().optional().catch('featured') });
+const filters = z.object({ q: fallback(z.string(), '').optional(), category: fallback(z.string(), '').optional(), difficulty: fallback(z.string(), '').optional(), grade: fallback(z.string(), '').optional(), max: fallback(z.number(), undefined).optional(), sort: fallback(z.string(), 'featured').optional() });
 export const Route = createFileRoute('/store')({
-  validateSearch: (search) => filters.parse(search),
-  loader: ({ context }) => context.queryClient.ensureQueryData(catalogOptions),
+  validateSearch: zodValidator(filters),
+  loader: async ({ context }) => { await context.queryClient.ensureQueryData(catalogOptions); },
   head: () => pageMeta('Explore Worksheets', 'Browse maths worksheets by grade, category, difficulty and price. Find your next breakthrough.'),
   component: Store, errorComponent: StoreError, notFoundComponent: StoreNotFound, pendingComponent: StorePending,
 });
@@ -26,7 +27,7 @@ function Store() {
   const search = Route.useSearch();
   const navigate = useNavigate({ from: '/store' });
   const cart = useCart();
-  const update = (key: string, value: string | number | undefined) => navigate({ search: prev => ({ ...prev, [key]: value }), replace: true });
+  const update = (key: string, value: string | number | undefined) => navigate({ to: '.', search: prev => ({ ...prev, [key]: value }), replace: true });
   const selected = data.products.filter(p => (!search.q || `${p.title} ${p.short_description}`.toLowerCase().includes(search.q.toLowerCase())) && (!search.category || p.category === search.category) && (!search.difficulty || p.difficulty === search.difficulty) && (!search.grade || p.grade === search.grade) && (search.max === undefined || p.price <= search.max)).sort((a,b) => search.sort === 'price-low' ? a.price - b.price : search.sort === 'price-high' ? b.price - a.price : search.sort === 'name' ? a.title.localeCompare(b.title) : Number(b.featured) - Number(a.featured));
   const featured = data.products.filter(p => p.featured);
   return <main><PageHeader eyebrow="The worksheet collection" title={<>A fresh page.<br /><span className="text-primary">A brighter understanding.</span></>}>Find the right practice for every stage of the journey.</PageHeader>
