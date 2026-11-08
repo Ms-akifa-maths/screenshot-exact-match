@@ -1,6 +1,6 @@
-import { useRouter } from '@tanstack/react-router';
+import { useRouter, type ErrorComponentProps } from '@tanstack/react-router';
 import { Button } from './ui/button';
-export function StoreError({ error }: { error: Error }) {
+export function StoreError({ error }: ErrorComponentProps) {
   const router = useRouter();
   return <main className="mx-auto min-h-[65vh] max-w-xl px-5 pt-40"><h1 className="text-3xl">We couldn't load this page</h1><p role="alert" className="my-5 text-muted-foreground">{error.message}</p><Button onClick={() => router.invalidate()}>Try again</Button></main>;
 }
