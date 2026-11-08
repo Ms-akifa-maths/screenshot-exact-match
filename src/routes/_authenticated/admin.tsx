@@ -67,7 +67,7 @@ function Orders() {
   const addNote = async (order_id: string) => {
     if (!note.trim()) return;
     const { data: u } = await supabase.auth.getUser();
-    if (fail((await supabase.from('order_notes').insert({ order_id, note: note.trim().slice(0, 2000), author_id: u.user?.id })).error)) return;
+    if (fail((await supabase.from('order_notes').insert({ order_id, note: note.trim().slice(0, 2000), author_id: u.user?.id ?? null })).error)) return;
     setNote(''); await refresh();
   };
   return (

@@ -34,7 +34,7 @@ function OrderPage() {
     setBusy(true);
     const { error } = await supabase.rpc('mark_payment_submitted', { _order_id: order.id });
     setBusy(false);
-    if (error) return toast.error("Couldn't update", { description: error.message });
+    if (error) { toast.error("Couldn't update", { description: error.message }); return; }
     toast.success("Thanks! We'll verify your payment shortly.");
     await qc.invalidateQueries({ queryKey: accountOptions.queryKey });
   };
@@ -60,7 +60,7 @@ function OrderPage() {
               <p className="mt-2 text-sm text-muted-foreground">Transfer <strong className="text-foreground">{formatPrice(order.total_amount, s.currency)}</strong> and use <strong className="font-mono text-foreground">{order.order_number}</strong> as the reference.</p>
               <dl className="mt-6 grid gap-3 text-sm">
                 {[['Bank', s.bank_name], ['Account title', s.account_title], ['Account number', s.account_number], ['IBAN', s.iban]].filter(([, v]) => v).map(([k, v]) => (
-                  <div key={k} className="flex items-center justify-between gap-3 border-b border-border pb-3"><dt className="text-muted-foreground">{k}</dt><dd className="flex items-center gap-2 font-mono">{v}<Button type="button" variant="ghost" size="icon" aria-label={`Copy ${k}`} onClick={() => copy(v)}><Copy className="size-3" /></Button></dd></div>
+                  <div key={k} className="flex items-center justify-between gap-3 border-b border-border pb-3"><dt className="text-muted-foreground">{k}</dt><dd className="flex items-center gap-2 font-mono">{v}<Button type="button" variant="ghost" size="icon" aria-label={`Copy ${k}`} onClick={() => copy(v ?? '')}><Copy className="size-3" /></Button></dd></div>
                 ))}
               </dl>
               {s.instructions && <p className="mt-5 text-sm whitespace-pre-line text-muted-foreground">{s.instructions}</p>}
