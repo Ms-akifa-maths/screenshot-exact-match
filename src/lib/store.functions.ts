@@ -22,15 +22,17 @@ export const readCatalog = createServerFn({ method: 'GET' }).handler(async () =>
 });
 
 export const readAccount = createServerFn({ method: 'GET' }).middleware([requireSupabaseAuth]).handler(async ({ context }) => {
-  const [orders, profile, downloads] = await Promise.all([
+  const [orders, profile, downloads, settings] = await Promise.all([
     context.supabase.from('orders').select('*, order_items(*)').eq('user_id', context.userId).order('created_at', { ascending: false }),
     context.supabase.from('profiles').select('*').eq('id', context.userId).single(),
     context.supabase.rpc('my_downloads'),
+    context.supabase.from('payment_settings').select('*').eq('id', 1).maybeSingle(),
   ]);
+  if (settings.error) throw new Error(settings.error.message);
   if (orders.error) throw new Error(orders.error.message);
   if (profile.error) throw new Error(profile.error.message);
   if (downloads.error) throw new Error(downloads.error.message);
-  return { orders: orders.data, profile: profile.data, downloads: downloads.data };
+  return { orders: orders.data, profile: profile.data, downloads: downloads.data ?? [], settings: settings.data };
 });
 
 export const readAdmin = createServerFn({ method: 'GET' }).middleware([requireSupabaseAuth]).handler(async ({ context }) => {
